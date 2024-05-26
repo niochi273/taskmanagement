@@ -1,16 +1,43 @@
 import { User, Task } from '@/app/lib/types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MyChart from '@/app/ui/profile/chart';
 import { montserrat, open_sans } from '../fonts';
+import { fetchTasks, fetchUsers } from '@/app/lib/data';
+import { useRouter } from 'next/navigation';
+import { refreshAccessToken } from '@/app/lib/auth';
 
-interface AdminProps {
-	users: User[],
-	tasks: Task[],
-}
+export const AdminProfileInterface = () => {
+	const [users, setUsers] = useState<User[]>([])
+	const [tasks, setTasks] = useState<Task[]>([])
+	const router = useRouter()
 
-export const AdminProfileInterface: React.FC<AdminProps> = ({ users, tasks }) => {
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const accessToken = localStorage.getItem('accessToken')
+				if (!accessToken) return router.replace('/auth/signin')
+				const [tasks, users] = await Promise.all([
+					fetchTasks(accessToken),
+					fetchUsers(accessToken)
+				])
+				setTasks(tasks)
+				setUsers(users)
+			} catch {
+				const { accessToken } = await refreshAccessToken()
+				const [tasks, users] = await Promise.all([
+					fetchTasks(accessToken),
+					fetchUsers(accessToken)
+				])
+				setTasks(tasks)
+				setUsers(users)
+			}
+		}
+
+		fetchData()
+	}, [router])
+
 	const sortedUsers = users.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()).slice(0, 5);
 	const sortedTasks = tasks.filter(task => task.isCompleted === true).sort((a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()).slice(0, 5);
 

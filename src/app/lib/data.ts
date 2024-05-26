@@ -9,6 +9,17 @@ export const fetchUsers = async (accessToken: string) => {
   return data
 }
 
+export const fetchUserTasks = async (accessToken: string) => {
+  const response = await fetch(`http://localhost:3000/tasks/user`, {
+    method: 'GET',
+    headers: { Authorization: `Bearer ${accessToken}` }
+  })
+
+  const data = await response.json()
+  if (!response.ok) throw new Error(data.message)
+  return data
+}
+
 export const fetchTasks = async (accessToken: string) => {
   const response = await fetch(`http://localhost:3000/tasks`, {
     method: 'GET',

@@ -1,6 +1,31 @@
+import { refreshAccessToken } from "@/app/lib/auth"
+import { fetchUserTasks } from "@/app/lib/data"
 import { Task } from "@/app/lib/types"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
-export default function UserInterface({ userTasks }: { userTasks: Task[] }) {
+export default function UserInterface() {
+	const [userTasks, setUserTasks] = useState<Task[]>([])
+	const router = useRouter()
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const accessToken = localStorage.getItem('accessToken')
+				if (!accessToken) return router.replace('/auth/signin')
+				const { userTasks } = await fetchUserTasks(accessToken)
+				setUserTasks(userTasks)
+			} catch {
+				const { accessToken } = await refreshAccessToken()
+				const { userTasks } = await fetchUserTasks(accessToken)
+				setUserTasks(userTasks)
+			}
+		}
+
+		fetchData()
+	}, [router])
+
+
 	return (
 		<div>
 			<ul>
