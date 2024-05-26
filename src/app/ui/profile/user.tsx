@@ -13,11 +13,11 @@ export default function UserInterface() {
 			try {
 				const accessToken = localStorage.getItem('accessToken')
 				if (!accessToken) return router.replace('/auth/signin')
-				const { userTasks } = await fetchUserTasks(accessToken)
+				const userTasks = await fetchUserTasks(accessToken)
 				setUserTasks(userTasks)
 			} catch {
 				const { accessToken } = await refreshAccessToken()
-				const { userTasks } = await fetchUserTasks(accessToken)
+				const userTasks = await fetchUserTasks(accessToken)
 				setUserTasks(userTasks)
 			}
 		}
@@ -30,9 +30,9 @@ export default function UserInterface() {
 		<div>
 			<ul>
 				<h1>Tasks:</h1>
-				{userTasks.length === 0 ?
+				{userTasks?.length === 0 ?
 					(<p>No tasks available</p>) :
-					(userTasks.map(task => (
+					(userTasks?.map(task => (
 						<li key={task.id}>
 							<div>Title: {task.title}</div>
 							{task.description ? (<h2>Description: {task.description}</h2>) : null}
