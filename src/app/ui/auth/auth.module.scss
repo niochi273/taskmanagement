@@ -1,0 +1,93 @@
+.form {
+  padding: 50px 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  width: 600px;
+  border-radius: 16px;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: 3.4rem;
+    letter-spacing: 1.8px;
+    cursor: default;
+    font-family: var(--font-redditMono);
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    padding-bottom: 10px;
+    width: 440px;
+    font-family: var(--font-montserrat);
+    margin-top: 30px;
+
+    label {
+      margin-left: 4px;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+
+    i {
+      position: absolute;
+      top: 49px;
+      left: 15px;
+      font-size: 2.1rem;
+      letter-spacing: 2px;
+    }
+
+    .input {
+      padding: 6px 16px 6px 65px;
+      font-weight: 500;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  button {
+    margin-top: 50px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: rgb(0, 94, 255);
+    width: 85%;
+    font-size: 2.1rem;
+    border-radius: 40px;
+    font-family: var(--font-montserrat);
+    letter-spacing: 2px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgb(0, 63, 209);
+    }
+  }
+
+  a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-family: var(--font-redditMono);
+    position: relative;
+    margin-top: 20px;
+
+    &::after {
+      content: '';
+      height: 2px;
+      width: 0;
+      background-color: #000;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transition: width 0.4s ease;
+    }
+
+    &:hover::after {
+      width: 75%;
+    }
+  }
+}
